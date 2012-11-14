@@ -61,7 +61,7 @@ module HypeTrain
       end
       
       def initialize
-        @@id = :metacritic
+        @@id = 'metacritic'
 
         @rss_uri = "#{Rails.root}/test/data/metacritic/rss/music"
         @@review_root_uri = "#{Rails.root}/test/data/metacritic/music"

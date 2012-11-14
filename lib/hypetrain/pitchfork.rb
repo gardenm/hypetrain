@@ -11,7 +11,7 @@ module HypeTrain
     # Represents rewviews from Best New Music
     class Site
       def initialize
-        @id = :pitchfork
+        @id = 'pitchfork'
 
         #@uri = 'http://feeds2.feedburner.com/PitchforkBestNewAlbums'
         @uri = "#{Rails.root}/test/data/pitchfork/rss/PitchforkBestNewAlbums"

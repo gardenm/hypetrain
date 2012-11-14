@@ -3,8 +3,16 @@ namespace :hypetrain do
   task :metacritic => :environment do
     require 'metacritic'
     
+    # TODO: Probably shouldn't have sooo much code in a rake file
     m = HypeTrain::Metacritic::Site.new
     m.reviews.each do |r|
+      
+      critics = Critic.where :name => r.source
+      if critics.empty?
+        critic = Critic.new :name => r.source
+      else
+        critic = critics.first
+      end
       
       artists = Artist.where :name => r.artist
       if artists.empty?
@@ -21,6 +29,21 @@ namespace :hypetrain do
         album = Album.new(:title => r.album)
         album.artist = artist
         album.save
+      else
+        album = albums.first
+      end
+      
+      reviews = album.reviews.select {|a| a.critic == critic}
+      
+      # Now create the review...
+      if reviews.empty?
+        review = Review.new :description => r.description.strip, :link => r.link
+        review.critic = critic
+        review.album = album
+        # TODO: Just get rid of this column...
+        review.source = critic.name
+        
+        review.save
       end
     end
   end
