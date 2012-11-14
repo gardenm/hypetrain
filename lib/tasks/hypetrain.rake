@@ -5,7 +5,23 @@ namespace :hypetrain do
     
     m = HypeTrain::Metacritic::Site.new
     m.reviews.each do |r|
-      puts r
+      
+      artists = Artist.where :name => r.artist
+      if artists.empty?
+        artist = Artist.new(:name => r.artist)
+        artist.save
+      else
+        artist = artists.first
+        # TODO: if artists.length != 1 throw
+      end
+      
+      albums = Album.where(:title => r.album).select {|a| a.artist == artist}
+      
+      if albums.empty?
+        album = Album.new(:title => r.album)
+        album.artist = artist
+        album.save
+      end
     end
   end
   
