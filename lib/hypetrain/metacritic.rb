@@ -9,6 +9,9 @@ module HypeTrain
   # Handles reviews from metacritic.com
   module Metacritic
     
+    CRITIC_ID = 'metacritic'
+    LINK = 'http://www.metacritic.com/music'
+    
     # Represents the metascore ratings used on metacritic.
     class Metascore
       
@@ -33,14 +36,14 @@ module HypeTrain
       attr_reader :metascore
       
       # (see ReviewBase#initialize)
-      def initialize(source, artist, album, link, description, pub_date)
-        super(source, artist, album, link, description, pub_date)
+      def initialize(artist, album, link, description, pub_date, local_data_src = nil)
+        super(CRITIC_ID, artist, album, link, description, pub_date)
 
         # Switch the link to point to a local file (only for testing)
-        @link.sub!('http://www.metacritic.com/music', Site::review_root_uri)
+        data_src = local_data_src.nil? ? @link : @link.sub(LINK, local_data_src)
 
         # Get the metascore
-        full_review = Nokogiri::HTML(File.open(@link, 'rb').read())
+        full_review = Nokogiri::HTML(open(data_src))
 
         metascore_html = full_review.css('div.metascore_summary')
         avg = metascore_html.css('span.score_value').text.strip
@@ -59,20 +62,18 @@ module HypeTrain
       
       include HypeTrain::Database
       
-      attr_reader :link
-      
-      def self.review_root_uri
-        @@review_root_uri
+      def link
+        LINK
       end
       
-      def initialize
-        @@id = 'metacritic'
-
-        @link = 'http://metacritic.com/music'
-        @rss_uri = "#{Rails.root}/test/data/metacritic/rss/music"
-        @@review_root_uri = "#{Rails.root}/test/data/metacritic/music"
-        
-        #@rss_uri = 'http://www.metacritic.com/rss/music'
+      def initialize(use_test_data = false)
+        if use_test_data
+          @rss_uri = "test/data/metacritic/rss/music"
+          @review_root_uri = "test/data/metacritic/music"
+        else
+          @rss_uri = 'http://www.metacritic.com/rss/music'
+          @review_root_uri = nil
+        end
 
         @loaded = false
         @reviews = []
@@ -85,7 +86,7 @@ module HypeTrain
           feed.items.each do |item|
             album, artist = item.title.split('by')
 
-            @reviews << Review.new(@@id, artist, album, item.link, item.description, item.pubDate)
+            @reviews << Review.new(artist, album, item.link, item.description, item.pubDate, @review_root_uri)
           end
         end
       end

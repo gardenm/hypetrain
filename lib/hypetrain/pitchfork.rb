@@ -9,18 +9,23 @@ module HypeTrain
   # Handles reviews from pitchfork.com's Best New Music
   module Pitchfork
     
+    CRITIC_ID = 'pitchfork'
+    LINK = 'http://pitchfork.com/'
+    
     # Represents rewviews from Best New Music
     class Site
       include HypeTrain::Database
       
-      attr_reader :link
+      def link
+        LINK
+      end
       
-      def initialize
-        @id = 'pitchfork'
-
-        @link = 'http://pitchfork.com/'
-        #@uri = 'http://feeds2.feedburner.com/PitchforkBestNewAlbums'
-        @uri = "#{Rails.root}/test/data/pitchfork/rss/PitchforkBestNewAlbums"
+      def initialize(use_test_data)      
+        if use_test_data
+          @uri = "test/data/pitchfork/rss/PitchforkBestNewAlbums"
+        else
+          @uri = 'http://feeds2.feedburner.com/PitchforkBestNewAlbums'
+        end
 
         @loaded = false
         @reviews = []
@@ -33,7 +38,7 @@ module HypeTrain
           feed.items.each do |item|
             artist, album = item.title.split(':')
 
-            @reviews << ReviewBase.new(@id, artist, album, item.link, item.description, item.pubDate)
+            @reviews << ReviewBase.new(CRITIC_ID, artist, album, item.link, item.description, item.pubDate)
           end
         end
       end
