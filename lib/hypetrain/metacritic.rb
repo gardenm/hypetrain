@@ -2,12 +2,13 @@ require 'open-uri'
 require 'rss'
 
 require_relative 'reviewbase'
+require_relative 'database'
 
 module HypeTrain
  
   # Handles reviews from metacritic.com
   module Metacritic
-        
+    
     # Represents the metascore ratings used on metacritic.
     class Metascore
       
@@ -56,6 +57,10 @@ module HypeTrain
     # Represents metacritic.com/music
     class Site
       
+      include HypeTrain::Database
+      
+      attr_reader :link
+      
       def self.review_root_uri
         @@review_root_uri
       end
@@ -63,6 +68,7 @@ module HypeTrain
       def initialize
         @@id = 'metacritic'
 
+        @link = 'http://metacritic.com/music'
         @rss_uri = "#{Rails.root}/test/data/metacritic/rss/music"
         @@review_root_uri = "#{Rails.root}/test/data/metacritic/music"
         
@@ -78,7 +84,6 @@ module HypeTrain
           feed = RSS::Parser.parse(rss, do_validate=false)
           feed.items.each do |item|
             album, artist = item.title.split('by')
-            puts 'artist: ' + artist
 
             @reviews << Review.new(@@id, artist, album, item.link, item.description, item.pubDate)
           end

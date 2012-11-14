@@ -2,6 +2,7 @@ require 'open-uri'
 require 'rss'
 
 require_relative 'reviewbase'
+require_relative 'database'
 
 module HypeTrain
 
@@ -10,6 +11,8 @@ module HypeTrain
     
     # Represents rewviews from Best New Music
     class Site
+      include HypeTrain::Database
+      
       def initialize
         @id = 'pitchfork'
 
