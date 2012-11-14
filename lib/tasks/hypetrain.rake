@@ -12,8 +12,6 @@ namespace :hypetrain do
     require 'pitchfork'
     
     p = HypeTrain::Pitchfork::Site.new
-    p.reviews.each do |r|
-      puts r
-    end
+    p.save_reviews
   end
 end

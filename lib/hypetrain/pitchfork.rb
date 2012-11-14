@@ -13,9 +13,12 @@ module HypeTrain
     class Site
       include HypeTrain::Database
       
+      attr_reader :link
+      
       def initialize
         @id = 'pitchfork'
 
+        @link = 'http://pitchfork.com/'
         #@uri = 'http://feeds2.feedburner.com/PitchforkBestNewAlbums'
         @uri = "#{Rails.root}/test/data/pitchfork/rss/PitchforkBestNewAlbums"
 
