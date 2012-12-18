@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  source: MyString
   link: MyString
   description: MyString
   pub_date: 2012-11-13
@@ -9,7 +8,6 @@ one:
   critic: 
 
 two:
-  source: MyString
   link: MyString
   description: MyString
   pub_date: 2012-11-13
