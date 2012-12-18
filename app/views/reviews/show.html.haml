@@ -1,0 +1,14 @@
+%html
+  %head
+    %title hype train
+  %body
+    - @artists.each do |artist|
+      - artist.albums.each do |album|
+        .album
+          %span(class='artist')= artist.name
+          %span(class='separator') -
+          %span(class='title')= album.title
+          .reviews
+            - album.reviews.each do |review|
+              =link_to image_tag('metacritic.svg', :class => 'metacritic'), review.link
+          
