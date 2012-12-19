@@ -5,30 +5,44 @@ class MetacriticTest < ActiveSupport::TestCase
   test "Review is created correctly" do
     r = HypeTrain::Metacritic::Review.new('Leona Lewis', 'Glassheart', "http://www.metacritic.com/music/glassheart/leona-lewis", 'Descr', '')
 
-    assert r.artist == 'Leona Lewis'
-    assert r.album == 'Glassheart'
-    assert r.link == 'http://www.metacritic.com/music/glassheart/leona-lewis'
-    assert r.description == 'Descr'
+    assert_equal 'Leona Lewis', r.artist
+    assert_equal 'Glassheart', r.album
+    assert_equal 'Descr', r.description
+    assert_equal 'http://www.metacritic.com/music/glassheart/leona-lewis', r.link
   end
 
   test "Site is created correctly" do
     s = HypeTrain::Metacritic::Site.new(true)
 
-    assert s.link == 'http://www.metacritic.com/music'
+    assert_equal s.link, 'http://www.metacritic.com/music'
   end
 
-  test "Site can load data" do
+  test "Site can load reviews" do
     s = HypeTrain::Metacritic::Site.new(true)
 
     reviews = s.reviews
-    assert reviews.count == 10
+    assert_equal reviews.count, 10
   
     r = reviews[6]
-    assert r.artist == 'Emeralds'
-    assert r.album == 'Just To Feel Anything'
-    assert r.link == 'http://www.metacritic.com/music/just-to-feel-anything/emeralds'
+    assert_equal 'Emeralds', r.artist
+    assert_equal 'Just To Feel Anything', r.album
+    assert_equal 'http://www.metacritic.com/music/just-to-feel-anything/emeralds', r.link
 
-    assert r.description.strip.starts_with? 'The Cleveland electronic'
-    assert r.metascore.average == '67'
+    assert_match /^The Cleveland electronic/, r.description.strip
+    assert_equal '67', r.metascore.average
+    assert_equal '67 (Generally favorable reviews)', r.metascore.to_s
+    assert_equal 'Emeralds - Just To Feel Anything: 67 (Generally favorable reviews)', r.to_s
+  end
+
+  test "Site can save reviews" do
+    s = HypeTrain::Metacritic::Site.new(true)
+
+    assert_equal 2, Review.all.count
+
+    r = s.reviews
+    s.save_reviews
+
+    # There are 10 reviews from the site in addition to the 2 in the fixture
+    assert_equal 12, Review.all.count
   end
 end
