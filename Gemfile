@@ -39,3 +39,7 @@ gem 'jquery-rails'
 
 gem 'nokogiri'
 gem 'haml-rails'
+
+group :test, :development do 
+  gem 'simplecov'
+end
