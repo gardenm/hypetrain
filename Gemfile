@@ -38,6 +38,7 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 gem 'nokogiri'
+gem 'rss-nokogiri'
 gem 'haml-rails'
 
 group :test, :development do 

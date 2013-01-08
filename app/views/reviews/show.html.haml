@@ -11,4 +11,6 @@
           .reviews
             - album.reviews.each do |review|
               =link_to image_tag(review.critic.name + '.png', :class => 'logo'), review.link
+          - if album.link
+            =link_to image_tag('RdioBlueLogo.png', :class => 'rdio'), album.link
           

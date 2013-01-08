@@ -1,10 +1,16 @@
-// Place all the styles related to the Reviews controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  font-family: sans-serif;
+  font-size: large;
+}
+
 .reviews {
   display: inline;
 }
 
 .reviews img.logo {
   width: 20px;
+}
+
+.album img.rdio {
+  height: 20px;
 }

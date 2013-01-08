@@ -86,7 +86,9 @@ module HypeTrain
           feed.items.each do |item|
             album, artist = item.title.split('by')
 
-            @reviews << Review.new(artist, album, item.link, item.description, item.pubDate, @review_root_uri)
+            if item.link != nil
+              @reviews << Review.new(artist, album, item.link, item.description, item.pubDate, @review_root_uri)
+            end
           end
         end
       end

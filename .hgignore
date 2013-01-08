@@ -12,6 +12,8 @@ db/*.sqlite3
 log/*.log
 tmp
 
+01_rdio_environment_vars.rb
+
 # Ignore coverage data
 syntax: regexp
 ^coverage/*
