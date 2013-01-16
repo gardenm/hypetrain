@@ -27,7 +27,6 @@ module HypeTrain
           @uri = 'http://feeds2.feedburner.com/PitchforkBestNewAlbums'
         end
 
-        @loaded = false
         @reviews = []
       end
 
@@ -45,7 +44,7 @@ module HypeTrain
 
       # Get all reviews (after loading the RSS feed, if that hasn't been done already)
       def reviews
-        load unless @loaded
+        load if @reviews.empty?
         @reviews
       end
     end

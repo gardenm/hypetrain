@@ -75,7 +75,6 @@ module HypeTrain
           @review_root_uri = nil
         end
 
-        @loaded = false
         @reviews = []
       end
 
@@ -95,7 +94,7 @@ module HypeTrain
 
       # Get all reviews (after parsing the RSS feed, if that hasn't been done already)
       def reviews
-        load unless @loaded
+        load if @reviews.empty?
         @reviews
       end
     end

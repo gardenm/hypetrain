@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   def show
-    @artists = Artist.all
-    @reviews = Review.all
+    @albums = Album.all :order => 'updated_at DESC'
+    @reviews = Review.all :order => 'updated_at DESC'
     
     respond_to do |format|
       format.html # show.html.haml
