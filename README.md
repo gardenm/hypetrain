@@ -1,6 +1,8 @@
 hypetrain
 =========
 
+Status: I'm not working on this repo any more... decided to switch technologies.
+
 Aggregator for music reviews, with links to Rdio for more info, streaming, etc.
 
 Includes some rake tasks (lib/tasks/hypetrain.rake) for pulling review info from Metacritic and Pitchfork, and for 
